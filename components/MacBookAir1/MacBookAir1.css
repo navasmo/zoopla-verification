@@ -1,0 +1,76 @@
+.macbook-air-1 {
+  align-items: flex-start;
+  background-color: var(--white);
+  border: 1px none;
+  display: flex;
+  width: 1280px;
+}
+
+.overlap-group1-1 {
+  align-items: flex-end;
+  background-position: 50% 50%;
+  background-size: cover;
+  display: flex;
+  height: 832px;
+  min-width: 1280px;
+  padding: 182px 155px;
+}
+
+.floor-plan-1 {
+  align-items: flex-start;
+  cursor: pointer;
+  display: flex;
+  min-width: 656px;
+}
+
+.overlap-group-2 {
+  height: 81px;
+  position: relative;
+  width: 654px;
+}
+
+.rectangle-29 {
+  background-color: var(--white);
+  border: 1px solid;
+  border-color: var(--electric-violet);
+  cursor: pointer;
+  height: 81px;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 654px;
+}
+
+.rectangle-14-1 {
+  border: 1px solid;
+  border-color: var(--electric-violet);
+  height: 12px;
+  left: 25px;
+  position: absolute;
+  top: 35px;
+  width: 15px;
+}
+
+.rectangle-15-1 {
+  border: 1px solid;
+  border-color: var(--electric-violet);
+  height: 15px;
+  left: 25px;
+  position: absolute;
+  top: 25px;
+  width: 7px;
+}
+
+.x2-floor-plan {
+  color: var(--electric-violet);
+  font-family: var(--font-family-inter);
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  left: 49px;
+  letter-spacing: 0;
+  line-height: normal;
+  position: absolute;
+  top: 28px;
+  width: 167px;
+}
+

@@ -1,0 +1,18 @@
+.checkbox {
+  border-radius: 21px;
+  height: 24px;
+  left: 433px;
+  position: absolute;
+  top: 673px;
+}
+
+.checkbox.checkbox-1 {
+  left: 645px;
+  top: 517px;
+}
+
+.checkbox.checkbox-2 {
+  left: 645px;
+  top: 557px;
+}
+
