@@ -47,11 +47,60 @@ function MacBookAir3(props) {
   // Initialize the app using your firebase config
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
-  
-//const countryCode ="+44";
-const [phoneNumber, setPhoneNumber] = useState('');
 
-const [OTP, setOTP] = useState('');
+
+  const generateRecapthcha =() => {
+  
+     window.recaptchaVerifier = new RecaptchaVerifier("recaptcha-container", {
+       'size': 'invisible',
+       'callback': (response) => {
+         // reCAPTCHA solved, allow signInWithPhoneNumber.
+       }
+      }, auth);
+  }
+
+//const countryCode ="+44";
+  const [phoneNumber, setPhoneNumber] = useState('');
+
+  const handleSubmit = (event) => {
+    // prevent the default behavior of the form submission
+    event.preventDefault();
+    
+    
+    if (!phoneNumber) {
+      // phone number input is empty, show an alert
+      alert("Please enter your phone number");
+      return;
+    } else {
+      let appVerifier = window.recaptchaVerifier;
+      generateRecapthcha();
+      // phone-number input is filled in and both checkboxes are ticked, invoke the signInWithPhoneNumber function
+      signInWithPhoneNumber(auth, phoneNumber, appVerifier)
+      .then((confirmationResult) => {
+      // SMS sent. Prompt user to type the code from the message, then sign the
+      // user in with confirmationResult.confirm(code).
+        window.confirmationResult = confirmationResult;
+        //window.location.href = "http://localhost:1234/macbook-air-4";
+        setForm5Visible(false);
+        setForm8Visible(true);
+      // ...
+    }).catch((error) => {
+      // Error; SMS not sent
+      // reset the reCAPTCHA
+      window.recaptchaVerifier.render().then(function(widgetId) {
+      grecaptcha.reset(widgetId);
+    });
+    });
+    }
+    // check if both checkboxes are ticked
+    const checkboxInputs = document.querySelectorAll("input[type='checkbox']");
+    if (!checkboxInputs || checkboxInputs.length !== 2 || !checkboxInputs[0].checked || !checkboxInputs[1].checked) {
+      // one or both checkboxes are not ticked, show an alert
+      alert("Please conrirm that you have read the Terms & Condition and GDPR by ticking both the boxes");
+    }
+  };
+  
+  const [OTP, setOTP] = useState('');
 
   const verifyOTP =(e) => {
     let otp = e.target.value;
@@ -64,67 +113,15 @@ const [OTP, setOTP] = useState('');
       confirmationResult.confirm(otp).then((result) =>{
 
         const user = result.user;
-        //window.location.href = "http://localhost:1234/macbook-air-5";
+
+        window.location.href = "http://localhost:1234/macbook-air-5";
        
       }).catch((error) => {
 
       });
     } else {
-      alert("Please enter a valid verification code.");
     }
   }
-
-const generateRecapthcha =() => {
-  if (document.getElementById("recaptcha-container")) {
-    window.recaptchaVerifier = new RecaptchaVerifier("recaptcha-container", {
-      'size': 'invisible',
-      'callback': (response) => {
-      
-        // reCAPTCHA solved, allow signInWithPhoneNumber.
-        onSignInSubmit();
-      }
-    }, auth);
-  } else {
-    console.error("Error: No element with ID 'recaptcha-container' found on the page.");
-  }
-}
-
-
-  const handleSubmit = (event) => {
-    // prevent the default behavior of the form submission
-    event.preventDefault();
-    
-    let appVerifier = window.recaptchaVerifier;
-    if (!phoneNumber) {
-      // phone number input is empty, show an alert
-      alert("Please enter your phone number");
-      return;
-    } else {
-      generateRecapthcha();
-      // phone-number input is filled in and both checkboxes are ticked, invoke the signInWithPhoneNumber function
-    signInWithPhoneNumber(auth, phoneNumber, appVerifier)
-    .then((confirmationResult) => {
-      // SMS sent. Prompt user to type the code from the message, then sign the
-      // user in with confirmationResult.confirm(code).
-      window.confirmationResult = confirmationResult;
-      window.location.href = "http://localhost:1234/macbook-air-4";
-      setForm5Visible(false);
-      setForm8Visible(true);
-      // ...
-    }).catch((error) => {
-      // Error; SMS not sent
-      // ...
-    });
-    }
-    // check if both checkboxes are ticked
-    const checkboxInputs = document.querySelectorAll("input[type='checkbox']");
-    if (!checkboxInputs || checkboxInputs.length !== 2 || !checkboxInputs[0].checked || !checkboxInputs[1].checked) {
-      // one or both checkboxes are not ticked, show an alert
-      alert("Please conrirm that you have read the Terms & Condition and GDPR by ticking both the boxes");
-      return;
-    }
-  };
-  
   return (
     <div className="container-center-horizontal">
       {form5Visible && (
@@ -205,7 +202,6 @@ const generateRecapthcha =() => {
               onChange={verifyOTP}
               placeholder={inputPlaceholder4}
               type={inputType4}
-              required
             />
           </div>
           <div className="overlap-group3-3">
